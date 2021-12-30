@@ -1,0 +1,77 @@
+spring:
+  profiles:
+    active: local
+  messages:
+    basename: i18n/exception
+    encoding: UTF-8
+  social:
+    kakao:
+      client_id: 7047208c7b5a97ce9afd6f567c209fdf # 앱생성시 받은 REST API 키
+      redirect: /social/login/kakao
+      url:
+        login: https://kauth.kakao.com/oauth/authorize
+        token: https://kauth.kakao.com/oauth/token
+        profile: https://kapi.kakao.com/v2/user/me
+  jwt:
+    secret: govlepel@$&
+
+---
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: warn
+    spring.apitest: debug
+#  path: /home ~
+#  file:
+#    max-histroy: 7 -> path를 지정하여 로그파일을 생성하도록 하고 최대 로그 유지일을 설정.
+
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/apitest
+    driver-class-name: org.h2.Driver
+    password:
+    username: sa
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+  url:
+    base: http://localhost:8080
+
+---
+
+logging:
+  level:
+    root: warn
+    spring.apitest: info
+  path: /home/ec2-user/api/log
+  file:
+    max-history: 7
+
+spring:
+  config:
+    activate:
+      on-profile: alpha
+  datasource:
+    url: jdbc:mysql://18.191.158.21:36091/garam?useUnicode=true&autoReconnect=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: garamkim
+    password: garam
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+  url:
+    base: http://ec2-18-191-158-21.us-east-2.compute.amazonaws.com
